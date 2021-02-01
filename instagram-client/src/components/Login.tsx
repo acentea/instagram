@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {TextField, Button, Grid, Link} from '@material-ui/core';
 import Axios from 'axios';
-import './Login.css';
+import './css/common.css';
 
 export default function Login() {
     const [email, setEmail] = useState("");

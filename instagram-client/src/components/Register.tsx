@@ -1,28 +1,38 @@
 import React, {useState} from 'react';
-import {TextField, Button, Grid, Link} from '@material-ui/core';
+import {TextField, Button} from '@material-ui/core';
+import { useHistory } from "react-router-dom";
 import Axios from 'axios';
-import './Login.css';
+import './css/common.css';
+import Error from './Error';
+
 
 export default function Register() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [passwordCheck, setPasswordCheck] = useState("");
-    const [displayName, setDisplayName] = useState("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [passwordCheck, setPasswordCheck] = useState<string>("");
+    const [displayName, setDisplayName] = useState<string>("");
+    const [errorMessage, setErrorMessage] = useState<string>("");
+    let history = useHistory();
 
-    const doLogin = (e) => {
+    const register = (e) => {
         e.preventDefault();
         Axios.post('http://localhost:5000/users/register', {
             email: email,
-            password: password
+            password: password,
+            passwordCheck: passwordCheck,
+            displayName: displayName
         }).then(res => {
-            console.log(res);
+            history.push('/login');
+        }).catch(error => {
+            const message = error && error.response && error.response.data && error.response.data.msg || '';
+            setErrorMessage(message);
         });
     }
 
     return (
         <>
             <div className="center">
-                <form onSubmit={doLogin}>
+                <form onSubmit={register}>
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -43,7 +53,7 @@ export default function Register() {
                         label="Password"
                         type="password"
                         id="password"
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
                     <TextField
                         variant="outlined"
@@ -76,6 +86,7 @@ export default function Register() {
                         Register
                     </Button>
                 </form>
+                <Error errorMessage={errorMessage}/>
             </div>
         </>
     );
