@@ -2,9 +2,8 @@ import React, {useState} from 'react';
 import {TextField, Button} from '@material-ui/core';
 import { useHistory } from "react-router-dom";
 import Axios from 'axios';
-import './css/common.css';
 import Error from './Error';
-
+import './css/common.css';
 
 export default function Register() {
     const [email, setEmail] = useState<string>("");
