@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Cookies from 'universal-cookie';
 import {User} from './contracts/User';
+import Header from './header/Header';
 import { useHistory } from "react-router-dom";
 
 export default function Home() {
@@ -20,7 +21,7 @@ export default function Home() {
     return (
         user ?
             <>
-                <div>Welcome {user.displayName}</div>
+                <Header/>
             </> :
             <></>
     )
