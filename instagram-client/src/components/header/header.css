@@ -3,6 +3,7 @@
     justify-content: center;
     align-items: center;
     height: 60px;
+    border: 1px solid gray;
 }
 
 .header-image {
@@ -20,4 +21,10 @@
 .header-buttons > div {
     max-width: 60px;
     flex: 1 0 0;
+}
+
+.menu {
+    position: absolute;
+    top: 65px;
+    z-index: 2;
 }
