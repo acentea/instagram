@@ -4,10 +4,19 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import './menu.css';
 import {Grid} from "@material-ui/core";
+import Cookies from 'universal-cookie';
+import { useHistory } from "react-router-dom";
 
 export default function Menu(props) {
     const showMenu = props.showMenu;
     const width = props.width;
+    const cookies = new Cookies();
+    let history = useHistory();
+
+    const logout = () => {
+        cookies.remove('user', { path: '/' });
+        history.push('/login');
+    };
 
     return (
         showMenu ?
@@ -29,7 +38,7 @@ export default function Menu(props) {
                         Settings
                     </Grid>
                 </Grid>
-                <Grid container direction="row" alignItems="flex-start" spacing={2}>
+                <Grid container direction="row" alignItems="flex-start" spacing={2} onClick={logout}>
                     <Grid item>
                         <ExitToAppIcon></ExitToAppIcon>
                     </Grid>

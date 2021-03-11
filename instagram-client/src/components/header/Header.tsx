@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import instagramImage from './headerIcons/instagram.png';
 import HomeIcon from '@material-ui/icons/Home';
 import MessageIcon from '@material-ui/icons/Message';
@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { deepPurple } from '@material-ui/core/colors';
 import Menu from '../menu/Menu'
 import './header.css';
+import Cookies from 'universal-cookie';
 
 const useStyles = makeStyles((theme) => ({
     avatar: {
@@ -18,14 +19,23 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
 export default function Header() {
     const classes = useStyles();
 
     const [showMenu, setShowMenu] = useState<boolean>(false);
+    const [displayName, setDisplayName] = useState<string>('');
+
     const homeIcon = useRef<HTMLHeadingElement>(null);
     const numberOfIcons : number = 4;
     const width : number = (homeIcon.current ? homeIcon.current.clientWidth : 20) * numberOfIcons;
+
+    useEffect(() => {
+        const cookies = new Cookies();
+        const user = cookies.get('user');
+        if (user) {
+            setDisplayName(user.displayName);
+        }
+    }, []);
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
@@ -45,7 +55,7 @@ export default function Header() {
                     <div><MessageIcon/></div>
                     <div><FavoriteIcon/></div>
                     <div onClick={toggleMenu}>
-                        <Avatar className={classes.avatar}>U</Avatar>
+                        <Avatar className={classes.avatar}>{displayName.charAt(0).toLocaleUpperCase()}</Avatar>
                     </div>
                 </div>
             </div>

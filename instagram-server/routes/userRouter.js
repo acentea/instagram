@@ -3,22 +3,43 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 const User = require("../models/userModel");
+const emailValidator = require("email-validator");
+const passwordValidator = require('password-validator');
+
+const passwordSchema = new passwordValidator();
+passwordSchema
+    .is().min(5)
+    .is().max(100)
+    .has().not().spaces()
+
+const displayNameSchema = new passwordValidator();
+displayNameSchema
+    .is().min(5)
+    .has().not().spaces()
 
 router.post("/register", async (req, res) => {
     try {
         let {email, password, passwordCheck, displayName} = req.body;
 
         // validate
-        if (!email || !password || !passwordCheck) {
-            return res.status(400).json({msg: "Not all fiels have been entered"});
+        if (!email || !password || !passwordCheck || !displayName) {
+            return res.status(400).json({msg: "Not all fields have been entered"});
         }
 
-        if (password.length < 5) {
-            return res.status(400).json({msg: "The password needs to be at least 5 characters long."});
+        if (!emailValidator.validate(email)) {
+            return res.status(400).json({msg: "Email is not valid."});
+        }
+
+        if (!passwordSchema.validate(password)) {
+            return res.status(400).json({msg: "The password needs to be between 5 - 100 characters long and it must not contain spaces."});
         }
 
         if (password !== passwordCheck) {
             return res.status(400).json({msg: "Enter the same password twice for verification."});
+        }
+
+        if (!displayNameSchema.validate(displayName)) {
+            return res.status(400).json({msg: "The displayName needs to be at least 5 characters long and it must not contain spaces."});
         }
 
         const existingUser = await User.findOne({email: email});
@@ -50,7 +71,7 @@ router.post("/login", async (req, res) => {
     try {
         const {email, password} = req.body;
         if (!email || !password) {
-            return res.status(400).json({msg: "Not all fiels have been entered"});
+            return res.status(400).json({msg: "Not all fields have been entered"});
         }
 
         const user = await User.findOne({email: email});

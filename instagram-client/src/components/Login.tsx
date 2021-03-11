@@ -55,6 +55,7 @@ export default function Login() {
                         type="password"
                         id="password"
                         autoComplete="new-password"
+                        onChange={(e) => setPassword(e.target.value)}
                     />
                     <Button
                         type="submit"
