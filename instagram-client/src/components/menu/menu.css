@@ -1,7 +1,6 @@
 .menu {
     display: flex;
     flex-direction: column;
-    width: 240px;
     border: 1px solid gray;
     justify-content: space-between;
 }

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import instagramImage from './headerIcons/instagram.png';
 import HomeIcon from '@material-ui/icons/Home';
 import MessageIcon from '@material-ui/icons/Message';
@@ -23,6 +23,9 @@ export default function Header() {
     const classes = useStyles();
 
     const [showMenu, setShowMenu] = useState<boolean>(false);
+    const homeIcon = useRef<HTMLHeadingElement>(null);
+    const numberOfIcons : number = 4;
+    const width : number = (homeIcon.current ? homeIcon.current.clientWidth : 20) * numberOfIcons;
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
@@ -35,9 +38,9 @@ export default function Header() {
                     <div><img src={instagramImage}/></div>
                 </div>
                 <div className='header-buttons'>
-                    <div>
+                    <div ref={homeIcon}>
                         <HomeIcon/>
-                        <Menu className='menu' showMenu={showMenu}/>
+                        <Menu className='menu' showMenu={showMenu} width={width}/>
                     </div>
                     <div><MessageIcon/></div>
                     <div><FavoriteIcon/></div>
